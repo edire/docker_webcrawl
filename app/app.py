@@ -1,7 +1,7 @@
 
-
 # from dotenv import load_dotenv
 # load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
+
 
 import os
 import dlogging
@@ -11,10 +11,14 @@ from demail.gmail import SendEmail
 package_name = os.getenv('package_name')
 logger = dlogging.NewLogger(__file__, use_cd=True, backup_count=0)
 
+
+#%% begin try
+
 try:
 
     error_string = ''
     logger.info('Beginning package')
+
 
     #%% import libraries
 
@@ -60,11 +64,25 @@ try:
             os.remove(filepath)
     
     
-    #%% odbc connector & scrape director
+    #%% odbc connector
     
-    logger.info('Create ODBC connector and gather scraping dataframe')
+    logger.info('Create ODBC connector')
     
     odbc = SQL(db=os.getenv('sql_db'), server=os.getenv('sql_server'), local_cred='no', uid=os.getenv('sql_uid'), pwd=os.getenv('sql_pwd'))
+    
+    
+    #%% odbc env variables
+    
+    logger.info('Gather env dataframe')
+    
+    df_env = odbc.read('select * from eggy.tblScrapeDirector_EnvList')
+    for s in range(df_env.shape[0]):
+        os.environ[df_env.at[s, 'env_name']] = df_env.at[s, 'env_value']
+    
+    
+    #%% odbc scrape director
+    
+    logger.info('Gather scraping dataframe')
     
     sql_scrape_director_tbl = os.getenv('sql_scrape_director_tbl')
     df_scrape = odbc.read(f'select * from {sql_scrape_director_tbl} order by sort_by')
