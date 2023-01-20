@@ -1,4 +1,8 @@
 
+
+# from dotenv import load_dotenv
+# load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
+
 import os
 import dlogging
 from demail.gmail import SendEmail
@@ -12,7 +16,7 @@ try:
     error_string = ''
     logger.info('Beginning package')
 
-#%% import libraries
+    #%% import libraries
 
     logger.info('Import Libraries')
 
@@ -26,7 +30,7 @@ try:
     directory_download = os.path.join(directory, 'downloads')
     
     
-#%% Clean Workspace
+    #%% Clean Workspace
 
     logger.info('Clean Workspace')
     
@@ -70,20 +74,35 @@ try:
     
     logger.info('Begin webscraping')
     has_error = False
+
+    # driver = dwebdriver.ChromeDriver(download_directory=directory_download
+    #                              , no_sandbox=True
+    #                              , headless = False
+    #                              )
     
     with dwebdriver.ChromeDriver(download_directory=directory_download
-                                 , no_sandbox=True
-                                 , window_size='1920,1080'
-                                 ) as driver:
-        
-        logger.info(f"webscrape URL - {os.getenv('url')}")
-        driver.get(os.getenv('url'))
-        sleep(10)
-        
+                                  , no_sandbox=True
+                                  , window_size='1920,1080'
+                                  ) as driver:
+    
         for i in range(df_scrape.shape[0]):
             df_temp = df_scrape[df_scrape.index == i].copy()
             logger.info(f"webscrape - {df_temp.at[i, 'descrip']}")
-            if df_temp.at[i, 'command'] == 'loadfile':
+            url_success = True
+            if df_temp.at[i, 'command'] == 'url':
+                try:
+                    url = df_temp.at[i, 'command_value']
+                    post_time_delay = df_temp.at[i, 'post_time_delay']
+                    driver.get(url)
+                    sleep(post_time_delay)
+                    url_success = True
+                except Exception as e:
+                    url_success = False
+                    e = str(e)
+                    has_error = True
+                    error_string += e + '\n\n'
+                    logger.critical(e)
+            elif df_temp.at[i, 'command'] == 'loadfile' and url_success == True:
                 try:
                     load_args = eval(df_temp.at[i, 'command_value'])
                     SQLLoad(**load_args)
@@ -92,7 +111,7 @@ try:
                     has_error = True
                     error_string += e + '\n\n'
                     logger.critical(e)
-            elif df_temp.at[i, 'command'] == 'runproc':
+            elif df_temp.at[i, 'command'] == 'runproc' and url_success == True:
                 try:
                     run_procs = df_temp.at[i, 'command_value']
                     for proc in run_procs.split(','):
@@ -103,10 +122,11 @@ try:
                     has_error = True
                     error_string += e + '\n\n'
                     logger.critical(e)
-            else:
+            elif url_success == True:
                 driver.process_df(df_temp, odbc_db=odbc)
     
     logger.info('Webscrape complete')
+    
     
     #%% Success Email
     
