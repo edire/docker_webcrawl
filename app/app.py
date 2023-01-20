@@ -1,6 +1,6 @@
 
-# from dotenv import load_dotenv
-# load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
+from dotenv import load_dotenv
+load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
 
 
 import os
@@ -43,27 +43,6 @@ try:
         os.remove(filepath)
     
     
-    #%% sql load
-    
-    logger.info('Define Functions')
-    
-    sql_schema_landing = os.getenv('sql_schema_landing')
-    
-    def SQLLoad(**kwargs):
-        for file in os.listdir(directory_download):
-            filepath = os.path.join(directory_download, file)
-            filename, fileext = os.path.splitext(file)
-            load_file = False
-            if fileext == '.xlsx':
-                df = pd.read_excel(filepath, **kwargs)
-                load_file = True
-            if load_file == True:
-                df = ddb.clean(df)
-                sql_tbl = 'tbl' + ddb.clean_string(filename)
-                odbc.to_sql(df, sql_tbl, schema=sql_schema_landing, if_exists='replace', index=False, extras=True)
-            os.remove(filepath)
-    
-    
     #%% odbc connector
     
     logger.info('Create ODBC connector')
@@ -86,8 +65,29 @@ try:
     
     sql_scrape_director_tbl = os.getenv('sql_scrape_director_tbl')
     df_scrape = odbc.read(f'select * from {sql_scrape_director_tbl} order by sort_by')
-
-
+    
+    
+    #%% sql load
+    
+    logger.info('Define Functions')
+    
+    sql_schema_landing = os.getenv('sql_schema_landing')
+    
+    def SQLLoad(**kwargs):
+        for file in os.listdir(directory_download):
+            filepath = os.path.join(directory_download, file)
+            filename, fileext = os.path.splitext(file)
+            load_file = False
+            if fileext == '.xlsx':
+                df = pd.read_excel(filepath, **kwargs)
+                load_file = True
+            if load_file == True:
+                df = ddb.clean(df)
+                sql_tbl = 'tbl' + ddb.clean_string(filename)
+                odbc.to_sql(df, sql_tbl, schema=sql_schema_landing, if_exists='replace', index=False, extras=True)
+            os.remove(filepath)
+    
+    
     #%% webscrape
     
     logger.info('Begin webscraping')
