@@ -1,6 +1,6 @@
 
-from dotenv import load_dotenv
-load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
+# from dotenv import load_dotenv
+# load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
 
 
 import os
