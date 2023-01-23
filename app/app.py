@@ -1,14 +1,10 @@
 
-# from dotenv import load_dotenv
-# load_dotenv(r"I:\My Drive\VerdeOutdoor\apx_webscrape\.env")
-
-
 import os
 import dlogging
 from demail.gmail import SendEmail
 
 
-package_name = os.getenv('package_name')
+package_name = 'selenium_to_sql'
 logger = dlogging.NewLogger(__file__, use_cd=True, backup_count=0)
 
 
@@ -34,15 +30,6 @@ try:
     directory_download = os.path.join(directory, 'downloads')
     
     
-    #%% Clean Workspace
-
-    logger.info('Clean Workspace')
-    
-    for file in os.listdir(directory_download):
-        filepath = os.path.join(directory_download, file)
-        os.remove(filepath)
-    
-    
     #%% odbc connector
     
     logger.info('Create ODBC connector')
@@ -57,6 +44,8 @@ try:
     df_env = odbc.read('select * from eggy.tblScrapeDirector_EnvList')
     for s in range(df_env.shape[0]):
         os.environ[df_env.at[s, 'env_name']] = df_env.at[s, 'env_value']
+        
+    package_name = os.getenv('package_name')
     
     
     #%% odbc scrape director
@@ -65,6 +54,15 @@ try:
     
     sql_scrape_director_tbl = os.getenv('sql_scrape_director_tbl')
     df_scrape = odbc.read(f'select * from {sql_scrape_director_tbl} order by sort_by')
+    
+   
+    #%% Clean Workspace
+
+    logger.info('Clean Workspace')
+    
+    for file in os.listdir(directory_download):
+        filepath = os.path.join(directory_download, file)
+        os.remove(filepath)
     
     
     #%% sql load
