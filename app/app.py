@@ -80,7 +80,7 @@ try:
                 df = pd.read_excel(filepath, **kwargs)
                 load_file = True
             if load_file == True:
-                df = ddb.clean(df)
+                df = ddb.clean(df, rowloadtime=True, drop_cols=False)
                 sql_tbl = 'tbl' + ddb.clean_string(filename)
                 odbc.to_sql(df, sql_tbl, schema=sql_schema_landing, if_exists='replace', index=False, extras=True)
             os.remove(filepath)
@@ -90,11 +90,6 @@ try:
     
     logger.info('Begin webscraping')
     has_error = False
-
-    # driver = dwebdriver.ChromeDriver(download_directory=directory_download
-    #                              , no_sandbox=True
-    #                              , headless = False
-    #                              )
     
     with dwebdriver.ChromeDriver(download_directory=directory_download
                                   , no_sandbox=True
