@@ -89,7 +89,6 @@ try:
     #%% webscrape
     
     logger.info('Begin webscraping')
-    has_error = False
     
     with dwebdriver.ChromeDriver(download_directory=directory_download
                                   , no_sandbox=True
@@ -99,30 +98,25 @@ try:
         for i in range(df_scrape.shape[0]):
             df_temp = df_scrape[df_scrape.index == i].copy()
             logger.info(f"webscrape - {df_temp.at[i, 'descrip']}")
-            url_success = True
             if df_temp.at[i, 'command'] == 'url':
                 try:
                     url = df_temp.at[i, 'command_value']
                     post_time_delay = df_temp.at[i, 'post_time_delay']
                     driver.get(url)
                     sleep(post_time_delay)
-                    url_success = True
                 except Exception as e:
-                    url_success = False
                     e = str(e)
-                    has_error = True
                     error_string += e + '\n\n'
                     logger.critical(e)
-            elif df_temp.at[i, 'command'] == 'loadfile' and url_success == True:
+            elif df_temp.at[i, 'command'] == 'loadfile':
                 try:
                     load_args = eval(df_temp.at[i, 'command_value'])
                     SQLLoad(**load_args)
                 except Exception as e:
                     e = str(e)
-                    has_error = True
                     error_string += e + '\n\n'
                     logger.critical(e)
-            elif df_temp.at[i, 'command'] == 'runproc' and url_success == True:
+            elif df_temp.at[i, 'command'] == 'runproc':
                 try:
                     run_procs = df_temp.at[i, 'command_value']
                     for proc in run_procs.split(','):
@@ -130,18 +124,23 @@ try:
                         odbc.run(sql)
                 except Exception as e:
                     e = str(e)
-                    has_error = True
                     error_string += e + '\n\n'
                     logger.critical(e)
-            elif url_success == True:
-                driver.process_df(df_temp, odbc_db=odbc)
+            else:
+                try:
+                    driver.process_df(df_temp, odbc_db=odbc)
+                except Exception as e:
+                    e = str(e)
+                    error_string += e + '\n\n'
+                    logger.critical(e)
+                
     
     logger.info('Webscrape complete')
     
     
     #%% Success Email
     
-    if has_error == False:
+    if error_string == '':
         sql = f"EXEC eggy.stpPythonLogging @package_name = '{package_name}', @is_success = 1, @error_descrip = NULL"
         odbc.run(sql)
         
