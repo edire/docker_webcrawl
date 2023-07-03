@@ -192,16 +192,6 @@ if error_string == '':
         f"\nVALUES ('{package_name}', 1, NULL)"
     engine.run(sql)
     
-    sql_last_sale = "SELECT MAX(sr.SignedDate) as max_sale FROM dbo.tblSalesReport sr"
-    df_last_sale = engine.read(sql_last_sale)
-    str_last_sale = f'Last sale date loaded to SQL: {str(df_last_sale.iat[0, 0])}'
-
-    SendEmail(to_email_addresses=os.getenv('email_success'),
-              subject=f'{package_name} Complete',
-              body=f'Data successfully imported for {package_name}!\n\n{str_last_sale}',
-              user=os.getenv('email_uid'),
-              password=os.getenv('email_pwd'))
-    
 else:
     logger.info('Record errors in SQL and raise Exception')
 

@@ -3,6 +3,7 @@
 import os
 import dlogging
 from demail.gmail import SendEmail
+import importlib
 
 
 package_name = os.getenv('package_name')
@@ -12,7 +13,13 @@ logger.info('Beginning package')
 
 try:
 
-    import main
+    importlib.import_module('01_apx_webscrape')
+    importlib.import_module('02_get_sage_data_e130')
+    importlib.import_module('03_get_sage_data_e150')
+    importlib.import_module('04_get_sharepoint_sales_daily_history')
+    importlib.import_module('05_get_sharepoint_commission')
+    importlib.import_module('06_upload_sharepoint_commission')
+    importlib.import_module('success_email')
 
     logger.info('Done! No problems.\n')
 

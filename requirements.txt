@@ -1,7 +1,10 @@
 numpy
 pandas
-sqlalchemy==1.4.46
+sqlalchemy
+openpyxl
 git+https://github.com/edire/dlogging.git
 git+https://github.com/edire/demail.git
 git+https://github.com/edire/ddb.git
 git+https://github.com/edire/dwebdriver.git
+sageintacctsdk
+Office365-REST-Python-Client

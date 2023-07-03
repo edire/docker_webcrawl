@@ -3,3 +3,7 @@ local/
 app/downloads/*
 app/logs/
 verde_apx/
+*.bat
+.vscode
+*.xlsx
+test_docker.py
