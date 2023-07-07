@@ -18,13 +18,20 @@ logger.info('Get Commission Proc Input Data')
 con = SQL()
 df = con.read('EXEC dbo.stpCommission_Input')
 
+logger.info('Load Workbook New')
+with pd.ExcelWriter(filepath_commissions, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+    df.to_excel(writer, index=False, header=False, sheet_name='New', startrow=3)
+
 
 #%%
 
-logger.info('Load Workbook')
+logger.info('Get Commission Add Input Data')
+con = SQL()
+df = con.read('SET NOCOUNT ON SELECT * FROM dbo.vCommissionRates')
 
+logger.info('Load Workbook History')
 with pd.ExcelWriter(filepath_commissions, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-    df.to_excel(writer, index=False, header=False, sheet_name='Sheet1', startrow=3)
+    df.to_excel(writer, index=False, header=False, sheet_name='History', startrow=3)
 
 
 #%%
