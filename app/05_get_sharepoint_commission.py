@@ -52,15 +52,20 @@ bytes_file_obj.seek(0)
 logger.info('Get New DataFrame')
 df = pd.read_excel(bytes_file_obj, sheet_name='New', engine='openpyxl', skiprows=2)
 df = df[['yes' in x.lower() for x in df['Review Complete? (Yes/No)']]]
-columns = ['Customer ID', 'Customer Name', 'Contract ID', 'AE #1', 'AE #1 Commission %', 'AE #2', 'AE #2 Commission %', 'Product Type']
-df = df[columns]
 
-logger.info('Upload to SQL staging')
-df = ddb.clean(df, drop_cols=False)
-df.to_sql('tblCommission_Approval', schema='stage', if_exists='replace', con=engine.con)
+if not df.empty:
+    columns = ['Customer ID', 'Customer Name', 'Contract ID', 'AE #1', 'AE #1 Commission %', 'AE #2', 'AE #2 Commission %', 'Contract Class']
+    df = df[columns]
 
-logger.info('Run SQL update')
-engine.run('EXEC dbo.stpCommissionRates')
+    logger.info('Upload to SQL staging')
+    df = ddb.clean(df, drop_cols=False)
+    df.to_sql('tblCommission_Approval', schema='stage', if_exists='replace', con=engine.con)
+
+    logger.info('Run SQL update')
+    engine.run('EXEC dbo.stpCommissionRates')
+
+else:
+    logger.info('No records to load')
 
 
 #%%
@@ -68,18 +73,25 @@ engine.run('EXEC dbo.stpCommissionRates')
 logger.info('Get History DataFrame')
 df = pd.read_excel(bytes_file_obj, sheet_name='History', engine='openpyxl', skiprows=2)
 df = df[['yes' in x.lower() for x in df['Update Record? (Yes/No)']]]
-columns = ['Customer ID', 'Customer Name', 'Contract ID', 'AE #1', 'AE #1 Commission %', 'AE #2', 'AE #2 Commission %', 'Product Type', 'Start Date']
-df = df[columns]
 
-logger.info('Upload to SQL staging')
-df = ddb.clean(df, drop_cols=False)
-df.to_sql('tblCommission_Approval_Add', schema='stage', if_exists='replace', con=engine.con)
+if not df.empty:
+    columns = ['Customer ID', 'Customer Name', 'Contract ID', 'AE #1', 'AE #1 Commission %', 'AE #2', 'AE #2 Commission %', 'Contract Class', 'Start Date']
+    df = df[columns]
 
-logger.info('Run SQL update')
-engine.run('EXEC dbo.stpCommissionRates_Add')
+    logger.info('Upload to SQL staging')
+    df = ddb.clean(df, drop_cols=False)
+    df.to_sql('tblCommission_Approval_Add', schema='stage', if_exists='replace', con=engine.con)
+
+    logger.info('Run SQL update')
+    engine.run('EXEC dbo.stpCommissionRates_Add')
+
+else:
+    logger.info('No records to update')
 
 
 #%%
 
 logger.info('Sharepoint Reads Complete')
 
+
+# %%
