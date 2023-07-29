@@ -51,7 +51,7 @@ bytes_file_obj.seek(0)
 
 logger.info('Get New DataFrame')
 df = pd.read_excel(bytes_file_obj, sheet_name='New', engine='openpyxl', skiprows=2)
-df = df[['yes' in x.lower() for x in df['Review Complete? (Yes/No)']]]
+df = df[['yes' in str(x).lower() for x in df['Review Complete? (Yes/No)']]]
 
 if not df.empty:
     columns = ['Customer ID', 'Customer Name', 'Contract ID', 'AE #1', 'AE #1 Commission %', 'AE #2', 'AE #2 Commission %', 'Contract Class']
@@ -72,7 +72,7 @@ else:
 
 logger.info('Get History DataFrame')
 df = pd.read_excel(bytes_file_obj, sheet_name='History', engine='openpyxl', skiprows=2)
-df = df[['yes' in x.lower() for x in df['Update Record? (Yes/No)']]]
+df = df[['yes' in str(x).lower() for x in df['Update Record? (Yes/No)']]]
 
 if not df.empty:
     columns = ['Customer ID', 'Customer Name', 'Contract ID', 'AE #1', 'AE #1 Commission %', 'AE #2', 'AE #2 Commission %', 'Contract Class', 'Start Date']
