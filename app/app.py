@@ -19,6 +19,7 @@ try:
     importlib.import_module('04_get_sharepoint_sales_daily_history')
     importlib.import_module('05_get_sharepoint_commission')
     importlib.import_module('06_upload_sharepoint_commission')
+    importlib.import_module('07_upload_commission_summaries')
     importlib.import_module('success_email')
 
     logger.info('Done! No problems.\n')
