@@ -11,6 +11,7 @@ import dlogging
 import datetime as dt
 
 
+error_string = ''
 year = (dt.datetime.now() - dt.timedelta(days=3)).year
 
 
@@ -48,11 +49,18 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
     df.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
 
 logger.info('Upload to sharepoint')
-with open(filepath_temp, 'rb') as content_file:
-    file_content = content_file.read()
-    target_folder.upload_file(f'Commission_Summary_{year}.xlsx', file_content).execute_query()
 
-logger.info('Upload complete for Main Summary!')
+try:
+    with open(filepath_temp, 'rb') as content_file:
+        file_content = content_file.read()
+        target_folder.upload_file(f'Commission_Summary_{year}.xlsx', file_content).execute_query()
+    logger.info('Upload complete for Main Summary!')
+
+except Exception as e:
+    e = str(e)
+    logger.critical(e)
+    error_string += e + '\n\n'
+
 os.remove(filepath_temp)
 
 
@@ -79,11 +87,17 @@ for ae in unique_ae_list:
         df_ae.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
 
     logger.info('Upload to sharepoint')
-    with open(filepath_temp, 'rb') as content_file:
-        file_content = content_file.read()
-        target_folder.upload_file(f'Commission_Summary_{year}_{ae}.xlsx', file_content).execute_query()
+    try:
+        with open(filepath_temp, 'rb') as content_file:
+            file_content = content_file.read()
+            target_folder.upload_file(f'Commission_Summary_{year}_{ae}.xlsx', file_content).execute_query()
 
-    logger.info(f'Upload complete for {ae}!')
+        logger.info(f'Upload complete for {ae}!')
+    except Exception as e:
+        e = str(e)
+        logger.critical(e)
+        error_string += e + '\n\n'
+
     os.remove(filepath_temp)
 
 logger.info('All uploads complete!')
@@ -101,16 +115,27 @@ with pd.ExcelWriter(filepath_issues, engine='openpyxl', mode='a', if_sheet_exist
     df_iss.to_excel(writer, index=False, header=False, sheet_name='Sheet1', startrow=1)
 
 logger.info('Upload to sharepoint')
-with open(filepath_issues, 'rb') as content_file:
-    file_content = content_file.read()
-    target_folder.upload_file(f'Invoice_Issues.xlsx', file_content).execute_query()
+try:
+    with open(filepath_issues, 'rb') as content_file:
+        file_content = content_file.read()
+        target_folder.upload_file(f'Invoice_Issues.xlsx', file_content).execute_query()
+    logger.info('Upload complete for Invoice Issues!')
 
-logger.info('Upload complete for Invoice Issues!')
+except Exception as e:
+    e = str(e)
+    logger.critical(e)
+    error_string += e + '\n\n'
 
 
 #%%
 
-logger.info('All Commission Summary Uploads Complete!')
+if error_string == '':
+    logger.info('All Commission Summary Uploads Complete!')
+    
+else:
+    logger.info('Some Commission Summary Uploads Failed!')
+
+    raise Exception('Errors occured during processing!\n\n' + error_string)
 
 
 #%%
