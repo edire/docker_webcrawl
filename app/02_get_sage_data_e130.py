@@ -38,7 +38,7 @@ connection = SageIntacctSDK(
 )
 
 
-#%%
+#%% AR Invoices
 
 logger.info('Get ar_invoices data')
 
@@ -73,7 +73,7 @@ logger.info('Run ar_invoices proc')
 con.run("EXEC eggy.stpARInvoices")
 
 
-#%%
+#%% Customer Data
 
 logger.info('Get customers data')
 
@@ -98,6 +98,64 @@ con.to_sql(df, 'tblCustomers', schema='stage', if_exists='replace', index=False)
 
 logger.info('Run customers proc')
 con.run("EXEC eggy.stpCustomers")
+
+
+#%% Payment Details
+
+logger.info('Get invoice payment details')
+
+fields = [
+    'RECORDNO',
+    'RECORDKEY',
+    'PAYMENTKEY',
+    'PAYMENTENTRYKEY',
+    'PAYMENTDATE',
+    'PAYMENTAMOUNT',
+    'WHENCREATED',
+    'WHENMODIFIED',
+    'CREATEDBY',
+    'MODIFIEDBY',
+]
+
+query_tuple_greaterthan = [('greaterthan', 'WHENMODIFIED', lookback_date)]
+response = connection.ar_payment_detail.get_by_query(fields=fields, and_filter=query_tuple_greaterthan)
+# response = connection.ar_payment_detail.get_by_query(fields=fields)
+df = pd.DataFrame(response)
+
+logger.info('Load ARPaymentDetails to SQL')
+con.to_sql(df, 'tblARPaymentDetails', schema='stage', if_exists='replace', index=False)
+
+logger.info('Run ARPaymentDetails proc')
+con.run("EXEC eggy.stpARPaymentDetails")
+
+
+#%% Payments
+
+# logger.info('Get invoice payment details')
+
+# fields = [
+#     'RECORDNO',
+#     'PRBATCHKEY',
+#     'CUSTOMERID',
+#     'CUSTOMERNAME',
+#     'WHENCREATED',
+#     'RECEIPTDATE',
+#     'WHENPAID',
+#     'TOTALENTERED',
+#     'TOTALPAID',
+#     'MEGAENTITYID',
+# ]
+
+# query_tuple_greaterthan = [('greaterthan', 'WHENMODIFIED', lookback_date)]
+# # response = connection.ar_payments.get_by_query(fields=fields, and_filter=query_tuple_greaterthan)
+# response = connection.ar_payments.get_by_query(fields=fields)
+# df = pd.DataFrame(response)
+
+# logger.info('Load ARPayments to SQL')
+# con.to_sql(df, 'tblARPayments', schema='stage', if_exists='replace', index=False)
+
+# logger.info('Run ARPayments proc')
+# con.run("EXEC eggy.stpARPayments")
 
 
 #%%
