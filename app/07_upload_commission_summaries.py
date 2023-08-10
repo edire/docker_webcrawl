@@ -9,15 +9,18 @@ from office365.runtime.auth.authentication_context import AuthenticationContext
 from office365.sharepoint.client_context import ClientContext
 import dlogging
 import datetime as dt
-
-
-error_string = ''
-year = (dt.datetime.now() - dt.timedelta(days=3)).year
+from openpyxl.styles import NamedStyle
 
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
 directory = os.path.dirname(__file__)
 filepath_commissions = os.path.join(directory, 'commission_summary.xlsx')
+
+
+error_string = ''
+year = (dt.datetime.now() - dt.timedelta(days=3)).year
+currency_style = NamedStyle(name='custom_01', number_format='_(\$* #,##0_);_(\$* (#,##0);_(\$* -??_);_(@_)')
+percent_style = NamedStyle(name='custom_02', number_format='0.0%')
 
 
 #%% Sharepoint Connect
@@ -47,6 +50,26 @@ shutil.copy2(filepath_commissions, filepath_temp)
 logger.info('Load Workbook Commission Summary')
 with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
     df.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
+    workbook = writer.book
+    worksheet = writer.sheets['Detail']
+    for cell in worksheet['D']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['L']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = percent_style
+    for cell in worksheet['M']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['O']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = percent_style
+    for cell in worksheet['P']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['Q']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
 
 logger.info('Upload to sharepoint')
 
@@ -83,8 +106,30 @@ for ae in unique_ae_list:
     shutil.copy2(filepath_commissions, filepath_temp)
 
     logger.info('Load Workbook')
+    df_ae_name = pd.DataFrame([ae], columns=['ae_name'])
     with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
         df_ae.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
+        df_ae_name.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=1, startcol=2)
+        workbook = writer.book
+        worksheet = writer.sheets['Detail']
+        for cell in worksheet['D']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = currency_style
+        for cell in worksheet['L']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = percent_style
+        for cell in worksheet['M']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = currency_style
+        for cell in worksheet['O']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = percent_style
+        for cell in worksheet['P']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = currency_style
+        for cell in worksheet['Q']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = currency_style
 
     logger.info('Upload to sharepoint')
     try:
