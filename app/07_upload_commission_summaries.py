@@ -154,14 +154,28 @@ logger.info('Get Invoice Issues Proc Data')
 df_iss = con.read('EXEC dbo.stpCommissionInvoiceIssues')
 
 filepath_issues = os.path.join(directory, 'invoice_issues.xlsx')
+filepath_temp = os.path.join(directory, 'invoice_issues_temp.xlsx')
+shutil.copy2(filepath_issues, filepath_temp)
+
 
 logger.info('Load Workbook New')
-with pd.ExcelWriter(filepath_issues, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
     df_iss.to_excel(writer, index=False, header=False, sheet_name='Sheet1', startrow=1)
+    workbook = writer.book
+    worksheet = writer.sheets['Sheet1']
+    for cell in worksheet['E']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['F']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['K']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
 
 logger.info('Upload to sharepoint')
 try:
-    with open(filepath_issues, 'rb') as content_file:
+    with open(filepath_temp, 'rb') as content_file:
         file_content = content_file.read()
         target_folder.upload_file(f'Invoice_Issues.xlsx', file_content).execute_query()
     logger.info('Upload complete for Invoice Issues!')
@@ -170,6 +184,8 @@ except Exception as e:
     e = str(e)
     logger.critical(e)
     error_string += e + '\n\n'
+
+os.remove(filepath_temp)
 
 
 #%%
