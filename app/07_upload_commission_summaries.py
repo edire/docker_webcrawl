@@ -55,19 +55,19 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
     for cell in worksheet['D']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
-    for cell in worksheet['L']:
-        if isinstance(cell.value, (int, float)):
-            cell.style = percent_style
     for cell in worksheet['M']:
         if isinstance(cell.value, (int, float)):
-            cell.style = currency_style
-    for cell in worksheet['O']:
-        if isinstance(cell.value, (int, float)):
             cell.style = percent_style
+    for cell in worksheet['N']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
     for cell in worksheet['P']:
         if isinstance(cell.value, (int, float)):
-            cell.style = currency_style
+            cell.style = percent_style
     for cell in worksheet['Q']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['R']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
 
@@ -115,19 +115,19 @@ for ae in unique_ae_list:
         for cell in worksheet['D']:
             if isinstance(cell.value, (int, float)):
                 cell.style = currency_style
-        for cell in worksheet['L']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = percent_style
         for cell in worksheet['M']:
             if isinstance(cell.value, (int, float)):
-                cell.style = currency_style
-        for cell in worksheet['O']:
-            if isinstance(cell.value, (int, float)):
                 cell.style = percent_style
+        for cell in worksheet['N']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = currency_style
         for cell in worksheet['P']:
             if isinstance(cell.value, (int, float)):
-                cell.style = currency_style
+                cell.style = percent_style
         for cell in worksheet['Q']:
+            if isinstance(cell.value, (int, float)):
+                cell.style = currency_style
+        for cell in worksheet['R']:
             if isinstance(cell.value, (int, float)):
                 cell.style = currency_style
 
