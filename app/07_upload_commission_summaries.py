@@ -31,7 +31,6 @@ ctx_auth = AuthenticationContext(url)
 ctx_auth.acquire_token_for_app(os.getenv('sharepoint_client_id'), os.getenv('sharepoint_client_secret'))
 ctx = ClientContext(url, ctx_auth)
 
-target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder'))
 
 #%% SQL Connect
 
@@ -55,15 +54,24 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
     for cell in worksheet['D']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
-    for cell in worksheet['M']:
+    for cell in worksheet['E']:
         if isinstance(cell.value, (int, float)):
-            cell.style = percent_style
-    for cell in worksheet['N']:
+            cell.style = currency_style
+    for cell in worksheet['F']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    for cell in worksheet['G']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = currency_style
+    # for cell in worksheet['M']:
+    #     if isinstance(cell.value, (int, float)):
+    #         cell.style = percent_style
+    for cell in worksheet['O']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
     for cell in worksheet['P']:
         if isinstance(cell.value, (int, float)):
-            cell.style = percent_style
+            cell.style = currency_style
     for cell in worksheet['Q']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
@@ -74,6 +82,7 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
 logger.info('Upload to sharepoint')
 
 try:
+    target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder'))
     with open(filepath_temp, 'rb') as content_file:
         file_content = content_file.read()
         target_folder.upload_file(f'Commission_Summary_{year}.xlsx', file_content).execute_query()
@@ -90,60 +99,75 @@ os.remove(filepath_temp)
 #%% Upload individual Summaries
 
 logger.info('Begin running individual AE reports')
-unique_ae_list = np.append(
-    df['ae_1'],
-    df['ae_2']
-)
-unique_ae_list = unique_ae_list[~pd.isna(unique_ae_list)]
-unique_ae_list = np.unique(unique_ae_list)
 
-for ae in unique_ae_list:
+df_ae_list = con.read("SELECT * FROM dbo.vAEList")
+
+for ae in df_ae_list['ae']:
 
     logger.info(f'Get Commission Proc Summary Data for {ae}')
     df_ae = con.read(f"EXEC dbo.stpCommissionSummary '{ae}'")
 
-    filepath_temp = os.path.join(directory, f'commission_summary_{ae}.xlsx')
-    shutil.copy2(filepath_commissions, filepath_temp)
+    if df_ae.empty == False:
+        filepath_temp = os.path.join(directory, f'commission_summary_{ae}.xlsx')
+        shutil.copy2(filepath_commissions, filepath_temp)
 
-    logger.info('Load Workbook')
-    df_ae_name = pd.DataFrame([ae], columns=['ae_name'])
-    with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-        df_ae.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
-        df_ae_name.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=1, startcol=2)
-        workbook = writer.book
-        worksheet = writer.sheets['Detail']
-        for cell in worksheet['D']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = currency_style
-        for cell in worksheet['M']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = percent_style
-        for cell in worksheet['N']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = currency_style
-        for cell in worksheet['P']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = percent_style
-        for cell in worksheet['Q']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = currency_style
-        for cell in worksheet['R']:
-            if isinstance(cell.value, (int, float)):
-                cell.style = currency_style
+        logger.info('Load Workbook')
+        df_ae_name = pd.DataFrame([ae], columns=['ae_name'])
+        with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+            df_ae.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
+            df_ae_name.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=1, startcol=2)
+            workbook = writer.book
+            worksheet = writer.sheets['Detail']
+            for cell in worksheet['D']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            for cell in worksheet['E']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            for cell in worksheet['F']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            for cell in worksheet['G']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            # for cell in worksheet['M']:
+            #     if isinstance(cell.value, (int, float)):
+            #         cell.style = percent_style
+            for cell in worksheet['O']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            for cell in worksheet['P']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            for cell in worksheet['Q']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
+            for cell in worksheet['R']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = currency_style
 
-    logger.info('Upload to sharepoint')
-    try:
-        with open(filepath_temp, 'rb') as content_file:
-            file_content = content_file.read()
-            target_folder.upload_file(f'Commission_Summary_{year}_{ae}.xlsx', file_content).execute_query()
+        logger.info('Upload to sharepoint')
+        try:
+            office = df_ae['Office'].iat[0]
+            target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder'))
+            ae_folder = target_folder.folders.add(office)
+            ctx.execute_query()
+            target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder') + f'/{office}')
+            ae_folder = target_folder.folders.add(ae)
+            ctx.execute_query()
+            with open(filepath_temp, 'rb') as content_file:
+                file_content = content_file.read()
+                ae_folder.upload_file(f'Commission_Summary_{year}_{ae}.xlsx', file_content).execute_query()
 
-        logger.info(f'Upload complete for {ae}!')
-    except Exception as e:
-        e = str(e)
-        logger.critical(e)
-        error_string += e + '\n\n'
+            logger.info(f'Upload complete for {ae}!')
+        except Exception as e:
+            e = str(e)
+            logger.critical(e)
+            error_string += e + '\n\n'
 
-    os.remove(filepath_temp)
+        os.remove(filepath_temp)
+    else:
+        logger.info('No data to load')
 
 logger.info('All uploads complete!')
 
@@ -175,6 +199,7 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
 
 logger.info('Upload to sharepoint')
 try:
+    target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder') + '/Leadership')
     with open(filepath_temp, 'rb') as content_file:
         file_content = content_file.read()
         target_folder.upload_file(f'Invoice_Issues.xlsx', file_content).execute_query()

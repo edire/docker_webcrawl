@@ -46,7 +46,7 @@ ctx = ClientContext(url, ctx_auth)
 #%%
 
 logger.info('Upload to sharepoint')
-target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder'))
+target_folder = ctx.web.get_folder_by_server_relative_url(os.getenv('sharepoint_upload_folder') + '/Leadership')
 
 with open(filepath_commissions, 'rb') as content_file:
     file_content = content_file.read()

@@ -145,6 +145,7 @@ logger.info('Begin webscraping')
 with dwebdriver.ChromeDriver(download_directory=directory_download
                                 , no_sandbox=True
                                 , window_size='1920,1080'
+                                , use_chromium = True
                                 ) as driver:
 
     for i in range(df_scrape.shape[0]):
