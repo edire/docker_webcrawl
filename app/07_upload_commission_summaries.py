@@ -33,10 +33,17 @@ ctx_auth.acquire_token_for_app(os.getenv('sharepoint_client_id'), os.getenv('sha
 ctx = ClientContext(url, ctx_auth)
 
 
-#%% SQL Connect
+#%%
 
-logger.info('SQL Connection')
-con = SQL()
+logger.info('SQL Engine')
+engine_vars = {
+    'db':os.getenv('sql_db'),
+    'server':os.getenv('sql_server'),
+    'uid':os.getenv('sql_uid'),
+    'pwd':os.getenv('sql_pwd'),
+}
+
+con = SQL(**engine_vars)
 
 
 #%% Upload Main Summary

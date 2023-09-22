@@ -14,8 +14,20 @@ filepath_commissions = os.path.join(directory, 'commissions.xlsx')
 
 #%%
 
+logger.info('SQL Engine')
+engine_vars = {
+    'db':os.getenv('sql_db'),
+    'server':os.getenv('sql_server'),
+    'uid':os.getenv('sql_uid'),
+    'pwd':os.getenv('sql_pwd'),
+}
+
+con = SQL(**engine_vars)
+
+
+#%%
+
 logger.info('Get Commission Proc Input Data')
-con = SQL()
 df = con.read('EXEC dbo.stpCommission_Input')
 
 logger.info('Load Workbook New')
@@ -26,7 +38,6 @@ with pd.ExcelWriter(filepath_commissions, engine='openpyxl', mode='a', if_sheet_
 #%%
 
 logger.info('Get Commission Add Input Data')
-con = SQL()
 df = con.read('SET NOCOUNT ON SELECT * FROM dbo.vCommissionRates')
 
 logger.info('Load Workbook History')
