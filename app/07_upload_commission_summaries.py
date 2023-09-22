@@ -15,6 +15,7 @@ from openpyxl.styles import NamedStyle
 logger = dlogging.NewLogger(__file__, use_cd=True)
 directory = os.path.dirname(__file__)
 filepath_commissions = os.path.join(directory, 'commission_summary.xlsx')
+filepath_commissions_ae = os.path.join(directory, 'commission_summary_ae.xlsx')
 
 
 error_string = ''
@@ -63,9 +64,6 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
     for cell in worksheet['G']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
-    # for cell in worksheet['M']:
-    #     if isinstance(cell.value, (int, float)):
-    #         cell.style = percent_style
     for cell in worksheet['O']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
@@ -78,6 +76,18 @@ with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists=
     for cell in worksheet['R']:
         if isinstance(cell.value, (int, float)):
             cell.style = currency_style
+    for cell in worksheet['S']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = percent_style
+    for cell in worksheet['T']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = percent_style
+    for cell in worksheet['U']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = percent_style
+    for cell in worksheet['V']:
+        if isinstance(cell.value, (int, float)):
+            cell.style = percent_style
 
 logger.info('Upload to sharepoint')
 
@@ -107,16 +117,22 @@ for ae in df_ae_list['ae']:
     logger.info(f'Get Commission Proc Summary Data for {ae}')
     df_ae = con.read(f"EXEC dbo.stpCommissionSummary '{ae}'")
 
+    logger.info(f'Get Commission Proc Approved Rates for {ae}')
+    df_ae_rates = con.read(f"EXEC dbo.stpCommissionRates_AE '{ae}'")
+
     if df_ae.empty == False:
         filepath_temp = os.path.join(directory, f'commission_summary_{ae}.xlsx')
-        shutil.copy2(filepath_commissions, filepath_temp)
+        shutil.copy2(filepath_commissions_ae, filepath_temp)
 
         logger.info('Load Workbook')
         df_ae_name = pd.DataFrame([ae], columns=['ae_name'])
         with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
             df_ae.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
             df_ae_name.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=1, startcol=2)
+            df_ae_rates.to_excel(writer, index=False, header=False, sheet_name='Approved Commission Rates', startrow=4)
+
             workbook = writer.book
+
             worksheet = writer.sheets['Detail']
             for cell in worksheet['D']:
                 if isinstance(cell.value, (int, float)):
@@ -130,9 +146,6 @@ for ae in df_ae_list['ae']:
             for cell in worksheet['G']:
                 if isinstance(cell.value, (int, float)):
                     cell.style = currency_style
-            # for cell in worksheet['M']:
-            #     if isinstance(cell.value, (int, float)):
-            #         cell.style = percent_style
             for cell in worksheet['O']:
                 if isinstance(cell.value, (int, float)):
                     cell.style = currency_style
@@ -145,6 +158,15 @@ for ae in df_ae_list['ae']:
             for cell in worksheet['R']:
                 if isinstance(cell.value, (int, float)):
                     cell.style = currency_style
+            for cell in worksheet['S']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = percent_style
+
+            worksheet = writer.sheets['Approved Commission Rates']
+            for cell in worksheet['G']:
+                if isinstance(cell.value, (int, float)):
+                    cell.style = percent_style
+
 
         logger.info('Upload to sharepoint')
         try:
