@@ -1,4 +1,4 @@
-FROM python:slim
+FROM python:3.11-slim
 
 #Install Slim Dependencies
 RUN apt-get update && apt-get install -y curl gnupg git

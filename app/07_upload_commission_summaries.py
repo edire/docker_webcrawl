@@ -245,7 +245,7 @@ os.remove(filepath_temp)
 #%%
 
 if error_string == '':
-    logger.info('All Commission Summary Uploads Complete!')
+    logger.info(f'Complete - {__name__}')
     
 else:
     logger.info('Some Commission Summary Uploads Failed!')

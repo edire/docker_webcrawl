@@ -8,4 +8,5 @@ git+https://github.com/edire/ddb.git
 git+https://github.com/edire/dwebdriver.git
 git+https://github.com/edire/sageintacct.git
 Office365-REST-Python-Client
+prefect
 # sageintacctsdk

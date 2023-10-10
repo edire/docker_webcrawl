@@ -192,6 +192,8 @@ if error_string == '':
     sql = f"INSERT INTO {os.getenv('error_logging_tbl')} (package_name, is_success, error_descrip)" \
         f"\nVALUES ('{package_name}', 1, NULL)"
     engine.run(sql)
+
+    logger.info(f'Complete - {__name__}')
     
 else:
     logger.info('Record errors in SQL and raise Exception')

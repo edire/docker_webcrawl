@@ -12,77 +12,84 @@ from ddb.sql import SQL
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
 
-
-#%%
-
-logger.info('SQL Engine')
-engine_vars = {
-    'db':os.getenv('sql_db'),
-    'server':os.getenv('sql_server'),
-    'uid':os.getenv('sql_uid'),
-    'pwd':os.getenv('sql_pwd'),
-}
-
-engine = SQL(**engine_vars)
+try:
 
 
-#%%
+    #%%
 
-logger.info('Sharepoint Authentication')
-url = os.getenv('sharepoint_url')
-ctx_auth = AuthenticationContext(url)
-ctx_auth.acquire_token_for_app(os.getenv('sharepoint_client_id'), os.getenv('sharepoint_client_secret'))
-ctx = ClientContext(url, ctx_auth)
+    logger.info('SQL Engine')
+    engine_vars = {
+        'db':os.getenv('sql_db'),
+        'server':os.getenv('sql_server'),
+        'uid':os.getenv('sql_uid'),
+        'pwd':os.getenv('sql_pwd'),
+    }
 
-
-#%%
-
-logger.info('Read Sales Tracker from Sharepoint')
-excel_file_path = os.getenv('excel_file_path_sales_tracker')
-
-response = File.open_binary(ctx, excel_file_path)
-bytes_file_obj = io.BytesIO()
-bytes_file_obj.write(response.content)
-bytes_file_obj.seek(0)
-# bytes_file_obj.read()
+    engine = SQL(**engine_vars)
 
 
-#%%
+    #%%
 
-logger.info('Verde SE Daily History')
-df = pd.read_excel(bytes_file_obj, sheet_name='Verde SE Sales Dollars', engine='openpyxl', skiprows=4, nrows=26)
-
-df = df[['As of', 'DH']]
-df = df[~pd.isna(df['As of'])]
-df.reset_index(drop=True, inplace=True)
-df.columns = ['descrip', 'value']
-df['asofdate'] = dt.date.today() - dt.timedelta(days=1)
-
-logger.info('Upload to SQL staging')
-# engine.to_sql(df, 'tblSalesTracker_DailyHistory_Verde', schema='stage', if_exists='replace', extras=True)
-df.to_sql('tblSalesTracker_DailyHistory_Verde', schema='stage', if_exists='replace', con=engine.con)
-
-engine.run('EXEC eggy.stpSalesTracker_DailyHistory_Verde')
+    logger.info('Sharepoint Authentication')
+    url = os.getenv('sharepoint_url')
+    ctx_auth = AuthenticationContext(url)
+    ctx_auth.acquire_token_for_app(os.getenv('sharepoint_client_id'), os.getenv('sharepoint_client_secret'))
+    ctx = ClientContext(url, ctx_auth)
 
 
-#%%
+    #%%
 
-logger.info('Sioux City Daily History')
-df = pd.read_excel(bytes_file_obj, sheet_name='Sioux City Sales Dollars', engine='openpyxl', skiprows=4, nrows=23)
+    logger.info('Read Sales Tracker from Sharepoint')
+    excel_file_path = os.getenv('excel_file_path_sales_tracker')
 
-df = df[['As of', 'DH']]
-df = df[~pd.isna(df['As of'])]
-df.reset_index(drop=True, inplace=True)
-df.columns = ['descrip', 'value']
-df['asofdate'] = dt.date.today() - dt.timedelta(days=1)
-
-logger.info('Upload to SQL staging')
-# engine.to_sql(df, 'tblSalesTracker_DailyHistory_SiouxCity', schema='stage', if_exists='replace', extras=True)
-df.to_sql('tblSalesTracker_DailyHistory_SiouxCity', schema='stage', if_exists='replace', con=engine.con)
-
-engine.run('EXEC eggy.stpSalesTracker_DailyHistory_SiouxCity')
+    response = File.open_binary(ctx, excel_file_path)
+    bytes_file_obj = io.BytesIO()
+    bytes_file_obj.write(response.content)
+    bytes_file_obj.seek(0)
+    # bytes_file_obj.read()
 
 
-#%%
+    #%%
 
-logger.info('Sharepoint Reads Complete')
+    logger.info('Verde SE Daily History')
+    df = pd.read_excel(bytes_file_obj, sheet_name='Verde SE Sales Dollars', engine='openpyxl', skiprows=4, nrows=26)
+
+    df = df[['As of', 'DH']]
+    df = df[~pd.isna(df['As of'])]
+    df.reset_index(drop=True, inplace=True)
+    df.columns = ['descrip', 'value']
+    df['asofdate'] = dt.date.today() - dt.timedelta(days=1)
+
+    logger.info('Upload to SQL staging')
+    # engine.to_sql(df, 'tblSalesTracker_DailyHistory_Verde', schema='stage', if_exists='replace', extras=True)
+    df.to_sql('tblSalesTracker_DailyHistory_Verde', schema='stage', if_exists='replace', con=engine.con)
+
+    engine.run('EXEC eggy.stpSalesTracker_DailyHistory_Verde')
+
+
+    #%%
+
+    logger.info('Sioux City Daily History')
+    df = pd.read_excel(bytes_file_obj, sheet_name='Sioux City Sales Dollars', engine='openpyxl', skiprows=4, nrows=23)
+
+    df = df[['As of', 'DH']]
+    df = df[~pd.isna(df['As of'])]
+    df.reset_index(drop=True, inplace=True)
+    df.columns = ['descrip', 'value']
+    df['asofdate'] = dt.date.today() - dt.timedelta(days=1)
+
+    logger.info('Upload to SQL staging')
+    # engine.to_sql(df, 'tblSalesTracker_DailyHistory_SiouxCity', schema='stage', if_exists='replace', extras=True)
+    df.to_sql('tblSalesTracker_DailyHistory_SiouxCity', schema='stage', if_exists='replace', con=engine.con)
+
+    engine.run('EXEC eggy.stpSalesTracker_DailyHistory_SiouxCity')
+
+
+    #%%
+
+    logger.info(f'Complete - {__name__}')
+
+
+except Exception as e:
+    logger.critical(str(e))
+    raise
