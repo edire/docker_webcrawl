@@ -43,6 +43,10 @@ try:
         importlib.import_module('07_upload_commission_summaries')
 
     @task
+    def romarket_cleanup():
+        importlib.import_module('08_romarket_cleanup')
+
+    @task
     def send_email():
         importlib.import_module('success_email')
         logger.info('Done! No problems.\n')
@@ -57,7 +61,8 @@ try:
         t5 = get_sharepoint_commission.submit()
         t6 = upload_sharepoint_commission.submit(wait_for=[t1, t2, t3, t5])
         t7 = upload_commission_summary.submit(wait_for=[t1, t2, t3, t5])
-        t8 = send_email.submit(wait_for=[t1, t2, t3, t4, t5, t6, t7])
+        t8 = romarket_cleanup.submit(wait_for=[t1])
+        send_email.submit(wait_for=[t1, t2, t3, t4, t5, t6, t7, t8])
 
     pipeline()
 

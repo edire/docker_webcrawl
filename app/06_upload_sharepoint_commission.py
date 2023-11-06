@@ -2,7 +2,7 @@
 
 import os
 import pandas as pd
-from ddb.sql import SQL
+from dbharbor.sql import SQL
 from office365.runtime.auth.authentication_context import AuthenticationContext
 from office365.sharepoint.client_context import ClientContext
 import dlogging

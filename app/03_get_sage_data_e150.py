@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from sageintacctsdk import SageIntacctSDK
 import datetime as dt
-from ddb.sql import SQL
+from dbharbor.sql import SQL
 import dlogging
 
 

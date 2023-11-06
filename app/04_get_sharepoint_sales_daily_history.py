@@ -8,7 +8,7 @@ import io
 import os
 import dlogging
 import datetime as dt
-from ddb.sql import SQL
+from dbharbor.sql import SQL
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
 

@@ -2,11 +2,10 @@ numpy
 pandas
 sqlalchemy
 openpyxl
+dbharbor
 git+https://github.com/edire/dlogging.git
 git+https://github.com/edire/demail.git
-git+https://github.com/edire/ddb.git
 git+https://github.com/edire/dwebdriver.git
 git+https://github.com/edire/sageintacct.git
 Office365-REST-Python-Client
 prefect
-# sageintacctsdk

@@ -7,3 +7,4 @@ verde_apx/
 .vscode
 *.xlsx
 test_docker.py
+poetry/

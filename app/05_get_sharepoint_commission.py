@@ -7,8 +7,8 @@ import pandas as pd
 import io
 import os
 import dlogging
-from ddb.sql import SQL
-import ddb
+from dbharbor.sql import SQL
+import dbharbor
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
 
@@ -60,7 +60,7 @@ try:
         df = df[columns]
 
         logger.info('Upload to SQL staging')
-        df = ddb.clean(df, drop_cols=False)
+        df = dbharbor.clean(df, drop_cols=False)
         df.to_sql('tblCommission_Approval', schema='stage', if_exists='replace', con=engine.con)
 
         logger.info('Run SQL update')
@@ -81,7 +81,7 @@ try:
         df = df[columns]
 
         logger.info('Upload to SQL staging')
-        df = ddb.clean(df, drop_cols=False)
+        df = dbharbor.clean(df, drop_cols=False)
         df.to_sql('tblCommission_Approval_Add', schema='stage', if_exists='replace', con=engine.con)
 
         logger.info('Run SQL update')

@@ -1,6 +1,6 @@
 #%% Local Code Only
 
-local_computer = 'powerhouse2'
+local_computer = 'MM-T27GFSV'
 import socket
 host_name = socket.gethostname()
 if host_name == local_computer:
@@ -11,9 +11,9 @@ if host_name == local_computer:
 
 
 #%% Imports
+
 import os
 import dlogging
-from demail.gmail import SendEmail
 
 
 package_name = os.getenv('package_name')
@@ -29,7 +29,7 @@ logger.info('Import Libraries')
 
 import pandas as pd
 import dwebdriver
-import ddb
+import dbharbor
 
 directory = os.path.dirname(os.path.realpath(__file__))
 directory_download = os.path.join(directory, 'downloads')
@@ -41,7 +41,7 @@ logger.info('Create engine connector')
 
 engine_type = os.getenv('engine')
 if engine_type == 'sql':
-    from ddb.sql import SQL
+    from dbharbor.sql import SQL
     engine_vars = {
         'db':os.getenv('sql_db'),
         'server':os.getenv('sql_server'),
@@ -49,7 +49,7 @@ if engine_type == 'sql':
         'pwd':os.getenv('sql_pwd'),
     }
 elif engine_type == 'mysql':
-    from ddb.mysql import SQL
+    from dbharbor.mysql import SQL
     engine_vars = {
         'db':os.getenv('mysql_db'),
         'server':os.getenv('mysql_server'),
@@ -57,7 +57,7 @@ elif engine_type == 'mysql':
         'pwd':os.getenv('mysql_pwd'),
     }
 elif engine_type == 'bigquery':
-    from ddb.bigquery import SQL
+    from dbharbor.bigquery import SQL
     engine_vars = {
         'credentials_filepath':os.getenv('bigquery_cred')
     }
@@ -125,9 +125,9 @@ def SQLLoad(**kwargs):
                 if kwargs['clean'] == 0:
                     pass
             else:
-                df = ddb.clean(df, rowloadtime=True, drop_cols=False)
+                df = dbharbor.clean(df, rowloadtime=True, drop_cols=False)
             if 'sql_tbl' not in kwargs:
-                sql_tbl = 'tbl' + ddb.clean_string(filename)
+                sql_tbl = 'tbl' + dbharbor.clean_string(filename)
                 sql_schema_landing = 'stage'
             elif '.' in kwargs['sql_tbl']:
                 sql_schema_landing, sql_tbl = kwargs['sql_tbl'].split('.')

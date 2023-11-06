@@ -2,7 +2,7 @@
 
 import os
 from demail.gmail import SendEmail
-from ddb.sql import SQL
+from dbharbor.sql import SQL
 import dlogging
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
