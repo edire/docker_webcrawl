@@ -64,6 +64,7 @@ def con_float(x):
     if pd.isna(x) == False:
         if '%' in x:
             x = x.replace('%', '')
+            x = x.replace(',', '')
             x = float(x)
             x = x / 100
         elif x == '-':
