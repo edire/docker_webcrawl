@@ -52,7 +52,7 @@ try:
     #%%
 
     logger.info('Verde SE Daily History')
-    df = pd.read_excel(bytes_file_obj, sheet_name='Verde SE Sales Dollars', engine='openpyxl', skiprows=4, nrows=26)
+    df = pd.read_excel(bytes_file_obj, sheet_name='Verde SE Sales Dollars', engine='openpyxl', skiprows=5, nrows=26)
 
     df = df[['As of', 'DH']]
     df = df[~pd.isna(df['As of'])]
@@ -70,7 +70,7 @@ try:
     #%%
 
     logger.info('Sioux City Daily History')
-    df = pd.read_excel(bytes_file_obj, sheet_name='Sioux City Sales Dollars', engine='openpyxl', skiprows=4, nrows=23)
+    df = pd.read_excel(bytes_file_obj, sheet_name='Sioux City Sales Dollars', engine='openpyxl', skiprows=5, nrows=23)
 
     df = df[['As of', 'DH']]
     df = df[~pd.isna(df['As of'])]
