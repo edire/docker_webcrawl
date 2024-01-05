@@ -7,4 +7,7 @@ verde_apx/
 .vscode
 *.xlsx
 test_docker.py
-poetry/
+poetry.lock
+pyproject.toml
+pyenv/
+requirements_*.txt

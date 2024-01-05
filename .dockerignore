@@ -5,4 +5,7 @@ logs/
 verde_apx/
 *.bat
 .vscode
-poetry/
+poetry.lock
+pyproject.toml
+pyenv/
+requirements_*.txt

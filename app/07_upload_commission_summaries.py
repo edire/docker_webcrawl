@@ -19,7 +19,8 @@ filepath_commissions_ae = os.path.join(directory, 'commission_summary_ae.xlsx')
 
 
 error_string = ''
-year = (dt.datetime.now() - dt.timedelta(days=3)).year
+year = (dt.datetime.now() - dt.timedelta(days=4)).year
+book_start_mnth = rf'1/31/{year}'
 currency_style = NamedStyle(name='custom_01', number_format='_(\$* #,##0_);_(\$* (#,##0);_(\$* -??_);_(@_)')
 percent_style = NamedStyle(name='custom_02', number_format='0.0%')
 
@@ -54,8 +55,11 @@ df = con.read('EXEC dbo.stpCommissionSummary NULL')
 filepath_temp = os.path.join(directory, 'commission_summary_temp.xlsx')
 shutil.copy2(filepath_commissions, filepath_temp)
 
+df_book_start_mnth = pd.DataFrame([book_start_mnth], columns=['book_start_mnth_name'])
+
 logger.info('Load Workbook Commission Summary')
 with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+    df_book_start_mnth.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=7, startcol=2)
     df.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
     workbook = writer.book
     worksheet = writer.sheets['Detail']
@@ -120,7 +124,7 @@ logger.info('Begin running individual AE reports')
 df_ae_list = con.read("SELECT * FROM dbo.vAEList")
 
 for ae in df_ae_list['ae']:
-
+    # pass
     logger.info(f'Get Commission Proc Summary Data for {ae}')
     df_ae = con.read(f"EXEC dbo.stpCommissionSummary '{ae}'")
 
@@ -136,6 +140,7 @@ for ae in df_ae_list['ae']:
         with pd.ExcelWriter(filepath_temp, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
             df_ae.to_excel(writer, index=False, header=False, sheet_name='Detail', startrow=4)
             df_ae_name.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=1, startcol=2)
+            df_book_start_mnth.to_excel(writer, index=False, header=False, sheet_name='Verde Outdoor Commissions', startrow=7, startcol=2)
             df_ae_rates.to_excel(writer, index=False, header=False, sheet_name='Approved Commission Rates', startrow=4)
 
             workbook = writer.book
