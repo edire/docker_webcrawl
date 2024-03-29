@@ -18,13 +18,17 @@ try:
     def apx_webscrape():
         importlib.import_module('01_apx_webscrape')
 
-    @task
+    @task(retries=2, retry_delay_seconds=120)
     def sage_e130():
         importlib.import_module('02_get_sage_data_e130')
 
-    @task
+    @task(retries=2, retry_delay_seconds=120)
     def sage_e150():
         importlib.import_module('03_get_sage_data_e150')
+
+    @task(retries=2, retry_delay_seconds=120)
+    def sage_e160():
+        importlib.import_module('03_get_sage_data_e160')
 
     @task
     def sharepoint_sales_daily_history():
@@ -57,12 +61,13 @@ try:
         t1 = apx_webscrape.submit()
         t2 = sage_e130.submit()
         t3 = sage_e150.submit(wait_for=[t2])
+        t31 = sage_e160.submit(wait_for=[t3])
         t4 = sharepoint_sales_daily_history.submit()
         t5 = get_sharepoint_commission.submit()
-        t6 = upload_sharepoint_commission.submit(wait_for=[t1, t2, t3, t5])
-        t7 = upload_commission_summary.submit(wait_for=[t1, t2, t3, t5])
+        t6 = upload_sharepoint_commission.submit(wait_for=[t1, t2, t3, t31, t5])
+        t7 = upload_commission_summary.submit(wait_for=[t1, t2, t3, t31, t5])
         t8 = romarket_cleanup.submit(wait_for=[t1])
-        send_email.submit(wait_for=[t1, t2, t3, t4, t5, t6, t7, t8])
+        send_email.submit(wait_for=[t1, t2, t3, t31, t4, t5, t6, t7, t8])
 
     pipeline()
 

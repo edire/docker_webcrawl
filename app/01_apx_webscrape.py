@@ -1,15 +1,3 @@
-#%% Local Code Only
-
-local_computer = 'MM-T27GFSV'
-import socket
-host_name = socket.gethostname()
-if host_name == local_computer:
-    filepath_scrapedirector = './verde_apx/scrape_director.csv'
-    filepath_scrapeenv = './verde_apx/env_list.csv'
-    from dotenv import load_dotenv
-    load_dotenv('./verde_apx/.env', override=True)
-
-
 #%% Imports
 
 import os
@@ -30,6 +18,7 @@ logger.info('Import Libraries')
 import pandas as pd
 import dwebdriver
 import dbharbor
+from dbharbor.sql import SQL
 
 directory = os.path.dirname(os.path.realpath(__file__))
 directory_download = os.path.join(directory, 'downloads')
@@ -39,58 +28,39 @@ directory_download = os.path.join(directory, 'downloads')
 
 logger.info('Create engine connector')
 
-engine_type = os.getenv('engine')
-if engine_type == 'sql':
-    from dbharbor.sql import SQL
-    engine_vars = {
-        'db':os.getenv('sql_db'),
-        'server':os.getenv('sql_server'),
-        'uid':os.getenv('sql_uid'),
-        'pwd':os.getenv('sql_pwd'),
-    }
-elif engine_type == 'mysql':
-    from dbharbor.mysql import SQL
-    engine_vars = {
-        'db':os.getenv('mysql_db'),
-        'server':os.getenv('mysql_server'),
-        'uid':os.getenv('mysql_uid'),
-        'pwd':os.getenv('mysql_pwd'),
-    }
-elif engine_type == 'bigquery':
-    from dbharbor.bigquery import SQL
-    engine_vars = {
-        'credentials_filepath':os.getenv('bigquery_cred')
-    }
-    
+engine_vars = {
+    'db':os.getenv('sql_db'),
+    'server':os.getenv('sql_server'),
+    'uid':os.getenv('sql_uid'),
+    'pwd':os.getenv('sql_pwd'),
+}
+
 engine = SQL(**engine_vars)
 
 
 #%% engine env variables
 
 logger.info('Gather env dataframe')
-if host_name == local_computer:
-    df_env = pd.read_csv(filepath_scrapeenv)
-else:
-    engine_env_tbl = os.getenv('engine_env_tbl')
-    if engine_env_tbl != None:
-        df_env = engine.read(f'select * from {engine_env_tbl}')
 
-if 'df_env' in locals():
-    for s in range(df_env.shape[0]):
-        os.environ[df_env.at[s, 'env_name']] = df_env.at[s, 'env_value']
+engine_env_tbl = os.getenv('engine_env_tbl')
+df_env = engine.read(f'select * from {engine_env_tbl}')
+
+for s in range(df_env.shape[0]):
+    os.environ[df_env.at[s, 'env_name']] = df_env.at[s, 'env_value']
 
 
 #%% engine scrape director
 
 logger.info('Gather scraping dataframe')
 
-if host_name == local_computer:
+filepath_scrapedirector = os.getenv('dev_scrape_director', '')
+if os.path.exists(filepath_scrapedirector):
     df_scrape = pd.read_csv(filepath_scrapedirector)
     df_scrape = df_scrape[pd.isna(df_scrape['command'])==False]
     df_scrape.reset_index(drop=True, inplace=True)
 else:
     sql_scrape_director_tbl = os.getenv('sql_scrape_director_tbl')
-    df_scrape = engine.read(f'select * from {sql_scrape_director_tbl} order by sort_by')
+    df_scrape = engine.read(f'select * from eggy.tblScrapeDirector_APX order by sort_by')
 
 
 #%% Clean Workspace

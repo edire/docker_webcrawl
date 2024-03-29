@@ -14,11 +14,7 @@ RUN apt-get update && \
 	ACCEPT_EULA=Y apt-get install -y msodbcsql17
 
 # Install Python dependencies.
-COPY requirements.txt requirements.txt
+COPY ./requirements.txt ./run.sh ./
 RUN pip install -r requirements.txt
 
-RUN mkdir /app
-COPY ./app /app
-WORKDIR /app
-
-CMD ["python", "app.py"]
+CMD ["/bin/sh", "./run.sh"]

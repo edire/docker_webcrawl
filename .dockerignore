@@ -4,8 +4,10 @@ app/downloads/*
 logs/
 verde_apx/
 *.bat
-.vscode
+.vscode/
+
+
 poetry.lock
 pyproject.toml
 pyenv/
-requirements_*.txt
+activate

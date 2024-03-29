@@ -4,10 +4,12 @@ app/downloads/*
 logs/
 verde_apx/
 *.bat
-.vscode
+.vscode/
 *.xlsx
 test_docker.py
 poetry.lock
 pyproject.toml
 pyenv/
-requirements_*.txt
+activate
+*.env
+deploy.sh
