@@ -1,6 +1,7 @@
 __pycache__/
 local/
 app/downloads/*
+!.gitkeep
 logs/
 verde_apx/
 *.bat
