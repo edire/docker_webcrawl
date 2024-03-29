@@ -2,26 +2,19 @@
 
 import os
 import dlogging
-
-
-package_name = os.getenv('package_name')
-logger = dlogging.NewLogger(__file__, use_cd=True, backup_count=0)
-
-error_string = ''
-logger.info('Beginning package')
-
-
-#%% import libraries
-
-logger.info('Import Libraries')
-
 import pandas as pd
 import dwebdriver
 import dbharbor
 from dbharbor.sql import SQL
 
+
+package_name = os.getenv('package_name')
+logger = dlogging.NewLogger(__file__, use_cd=True, backup_count=0)
 directory = os.path.dirname(os.path.realpath(__file__))
 directory_download = os.path.join(directory, 'downloads')
+
+error_string = ''
+logger.info('Beginning package')
 
 
 #%% engine connector
@@ -36,17 +29,6 @@ engine_vars = {
 }
 
 engine = SQL(**engine_vars)
-
-
-#%% engine env variables
-
-logger.info('Gather env dataframe')
-
-engine_env_tbl = os.getenv('engine_env_tbl')
-df_env = engine.read(f'select * from {engine_env_tbl}')
-
-for s in range(df_env.shape[0]):
-    os.environ[df_env.at[s, 'env_name']] = df_env.at[s, 'env_value']
 
 
 #%% engine scrape director

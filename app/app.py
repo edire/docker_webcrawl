@@ -5,6 +5,7 @@ import dlogging
 from demail.gmail import SendEmail
 import importlib
 from prefect import task, flow
+from dbharbor.sql import SQL
 
 
 package_name = os.getenv('package_name')
@@ -13,6 +14,33 @@ logger.info('Beginning package')
 
 
 try:
+    
+    #%% engine connector
+
+    logger.info('Create engine connector')
+
+    engine_vars = {
+        'db':os.getenv('sql_db'),
+        'server':os.getenv('sql_server'),
+        'uid':os.getenv('sql_uid'),
+        'pwd':os.getenv('sql_pwd'),
+    }
+
+    engine = SQL(**engine_vars)
+
+
+    #%% engine env variables
+
+    logger.info('Gather env dataframe')
+
+    engine_env_tbl = os.getenv('engine_env_tbl')
+    df_env = engine.read(f'select * from {engine_env_tbl}')
+
+    for s in range(df_env.shape[0]):
+        os.environ[df_env.at[s, 'env_name']] = df_env.at[s, 'env_value']
+
+
+    #%%
 
     @task
     def apx_webscrape():
