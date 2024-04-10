@@ -4,7 +4,7 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y curl gnupg git
 
 #Chromium
-RUN apt-get update && apt-get install -y chromium-driver
+RUN apt-get update && apt-get install -y --fix-missing chromium-driver
 
 #ODBC
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
@@ -14,7 +14,9 @@ RUN apt-get update && \
 	ACCEPT_EULA=Y apt-get install -y msodbcsql17
 
 # Install Python dependencies.
-COPY ./requirements.txt ./run.sh ./
+COPY ./requirements.txt ./run.sh /
 RUN pip install -r requirements.txt
+
+COPY ./templates /templates
 
 CMD ["/bin/sh", "./run.sh"]

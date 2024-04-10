@@ -14,8 +14,8 @@ from openpyxl.styles import NamedStyle
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
 directory = os.path.dirname(__file__)
-filepath_commissions = os.path.join(directory, 'commission_summary.xlsx')
-filepath_commissions_ae = os.path.join(directory, 'commission_summary_ae.xlsx')
+filepath_commissions = os.path.join(os.path.dirname(directory), 'templates', 'commission_summary.xlsx')
+filepath_commissions_ae = os.path.join(os.path.dirname(directory), 'templates', 'commission_summary_ae.xlsx')
 
 
 error_string = ''
@@ -211,7 +211,7 @@ logger.info('All uploads complete!')
 logger.info('Get Invoice Issues Proc Data')
 df_iss = con.read('EXEC dbo.stpCommissionInvoiceIssues')
 
-filepath_issues = os.path.join(directory, 'invoice_issues.xlsx')
+filepath_issues = os.path.join(os.path.dirname(directory), 'templates', 'invoice_issues.xlsx')
 filepath_temp = os.path.join(directory, 'invoice_issues_temp.xlsx')
 shutil.copy2(filepath_issues, filepath_temp)
 

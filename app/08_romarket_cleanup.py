@@ -100,7 +100,9 @@ def clean_and_load(sql_name):
 #%%
 
 clean_and_load('ROMarketH')
-clean_and_load('ROMarketS')
+# clean_and_load('ROMarketS')
+
+logger.info(f'Complete - {__name__}')
 
 
 #%%

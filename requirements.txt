@@ -27,7 +27,7 @@ cssselect==1.2.0
 cssutils==2.9.0
 dateparser==1.1.8
 db-dtypes==1.1.1
-dbharbor==0.1.3
+dbharbor==0.1.4
 debugpy==1.8.0
 decorator==5.1.1
 demail @ git+https://github.com/edire/demail.git@7e614361f729f5f44b7e461e2cb77f1ed0806faa
