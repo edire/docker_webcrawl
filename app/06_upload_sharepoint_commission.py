@@ -9,7 +9,7 @@ import dlogging
 
 logger = dlogging.NewLogger(__file__, use_cd=True)
 directory = os.path.dirname(__file__)
-filepath_commissions = os.path.join(os.path.dirname(directory), 'templates', 'commissions.xlsx')
+filepath_commissions = os.path.join(directory, 'templates', 'commissions.xlsx')
 
 try:
 
