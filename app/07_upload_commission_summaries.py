@@ -211,7 +211,7 @@ logger.info('All uploads complete!')
 logger.info('Get Invoice Issues Proc Data')
 df_iss = con.read('EXEC dbo.stpCommissionInvoiceIssues')
 
-filepath_issues = os.path.join(os.path.dirname(directory), 'templates', 'invoice_issues.xlsx')
+filepath_issues = os.path.join(directory, 'templates', 'invoice_issues.xlsx')
 filepath_temp = os.path.join(directory, 'invoice_issues_temp.xlsx')
 shutil.copy2(filepath_issues, filepath_temp)
 
