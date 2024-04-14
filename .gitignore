@@ -15,3 +15,4 @@ activate
 *.env
 deploy.sh
 templates/
+.python-version

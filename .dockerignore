@@ -11,3 +11,4 @@ poetry.lock
 pyproject.toml
 pyenv/
 activate
+.python-version

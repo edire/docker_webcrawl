@@ -59,7 +59,10 @@ for file in os.listdir(directory_download):
 logger.info('Define Functions')
 
 def SQLLoad(**kwargs):
+    i = 0
     for file in os.listdir(directory_download):
+        if file != '.gitkeep':
+            i += 1
         logger.info(file)
         filepath = os.path.join(directory_download, file)
         filename, fileext = os.path.splitext(file)
@@ -88,6 +91,8 @@ def SQLLoad(**kwargs):
                 sql_schema_landing = None
             engine.to_sql(df, sql_tbl, schema=sql_schema_landing, if_exists='replace', index=False, extras=True)
         os.remove(filepath)
+    if i == 0:
+        raise Exception(f"No downloaded files found, kwargs: {kwargs}")
 
 
 #%% webscrape

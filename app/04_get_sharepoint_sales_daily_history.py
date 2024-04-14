@@ -65,7 +65,6 @@ try:
             df_temp['asofdate'] = dt.date.today() - dt.timedelta(days=1)
 
             logger.info(f'Upload to SQL staging - {col}')
-            # engine.to_sql(df_temp, 'tblSalesTracker_DailyHistory_Verde', schema='stage', if_exists='replace', extras=True)
             df_temp.to_sql(f'tblSalesTracker_DailyHistory_Verde{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
 
     engine.run('EXEC eggy.stpSalesTracker_DailyHistory_Verde')
@@ -87,10 +86,30 @@ try:
             df_temp['asofdate'] = dt.date.today() - dt.timedelta(days=1)
 
             logger.info(f'Upload to SQL staging - {col}')
-    # engine.to_sql(df, 'tblSalesTracker_DailyHistory_SiouxCity', schema='stage', if_exists='replace', extras=True)
     df.to_sql(f'tblSalesTracker_DailyHistory_SiouxCity{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
 
     engine.run('EXEC eggy.stpSalesTracker_DailyHistory_SiouxCity')
+
+
+    #%%
+
+    logger.info('Hudson Valley Daily History')
+    df = pd.read_excel(bytes_file_obj, sheet_name='Hudson Sales Dollars', engine='openpyxl', skiprows=5, nrows=26)
+
+    for col in df.columns:
+        if not isinstance(col, str):
+            pass
+        elif col[:2] == 'DH':
+            df_temp = df[['As of', col]].copy()
+            df_temp = df_temp[~pd.isna(df_temp['As of'])]
+            df_temp.reset_index(drop=True, inplace=True)
+            df_temp.columns = ['descrip', 'value']
+            df_temp['asofdate'] = dt.date.today() - dt.timedelta(days=1)
+
+            logger.info(f'Upload to SQL staging - {col}')
+    df.to_sql(f'tblSalesTracker_DailyHistory_Hudson{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
+
+    engine.run('EXEC eggy.stpSalesTracker_DailyHistory_Hudson')
 
 
     #%%
