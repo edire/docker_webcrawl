@@ -86,7 +86,7 @@ try:
             df_temp['asofdate'] = dt.date.today() - dt.timedelta(days=1)
 
             logger.info(f'Upload to SQL staging - {col}')
-    df.to_sql(f'tblSalesTracker_DailyHistory_SiouxCity{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
+            df_temp.to_sql(f'tblSalesTracker_DailyHistory_SiouxCity{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
 
     engine.run('EXEC eggy.stpSalesTracker_DailyHistory_SiouxCity')
 
@@ -107,7 +107,7 @@ try:
             df_temp['asofdate'] = dt.date.today() - dt.timedelta(days=1)
 
             logger.info(f'Upload to SQL staging - {col}')
-    df.to_sql(f'tblSalesTracker_DailyHistory_Hudson{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
+            df_temp.to_sql(f'tblSalesTracker_DailyHistory_Hudson{col[2:]}', schema='stage', if_exists='replace', con=engine.con)
 
     engine.run('EXEC eggy.stpSalesTracker_DailyHistory_Hudson')
 
