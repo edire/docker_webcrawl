@@ -1,0 +1,44 @@
+{
+    "reports_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"app\"]\/nav\/div[2]\/ul\/li[6]\/span"
+    },
+    "filter_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[2]\/div"
+    },
+    "filter_frame":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "2",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "clear_filter":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 5.0,
+        "xpath": "\/\/*[@id=\"clearFields\"]\/span"
+    },
+    "accept_alert":{
+        "command": "accept",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 5.0,
+        "xpath": null
+    },
+    "main_frame":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "parent",
+        "post_time_delay": 2.0,
+        "xpath": null
+    }
+}

@@ -17,6 +17,6 @@ RUN apt-get update && \
 COPY ./requirements.txt ./run.sh /
 RUN pip install -r requirements.txt
 
-COPY ./templates /templates
+COPY ./app/templates /templates
 
 CMD ["/bin/sh", "./run.sh"]

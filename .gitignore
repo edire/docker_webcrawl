@@ -16,3 +16,4 @@ activate
 deploy.sh
 templates/
 .python-version
+desktop.ini

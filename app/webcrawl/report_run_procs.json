@@ -1,0 +1,16 @@
+{
+    "sql_proc_location":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC dim.stpLocation",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "sql_proc_update_all":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC dbo.stpUpdateAll",
+        "post_time_delay": null,
+        "xpath": null
+    }
+}
