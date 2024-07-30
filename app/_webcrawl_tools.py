@@ -70,7 +70,7 @@ def GetWebDriver():
         no_sandbox=True,
         window_size='1920,1080',
         use_chromium = True,
-        headless=False
+        headless=True
     )
     return driver, temp_dir
 
