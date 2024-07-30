@@ -31,7 +31,7 @@
         "command": "click",
         "command_value_type": null,
         "command_value": null,
-        "post_time_delay": 10.0,
+        "post_time_delay": 30.0,
         "xpath": "\/\/*[@id=\"actionExport\"]"
     },
     "load_sql":{

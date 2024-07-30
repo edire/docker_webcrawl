@@ -6,7 +6,8 @@ from sageintacctsdk import SageIntacctSDK
 import datetime as dt
 from dbharbor.sql import SQL
 
-
+import dlogging
+logger = dlogging.NewLogger(__file__, use_cd=True)
 lookback_date = dt.date.today() + dt.timedelta(days=-60)
 lookback_date = lookback_date.strftime(r'%m/%d/%Y')
 
@@ -60,6 +61,7 @@ def ARInvoices(sage_con, suffix):
     # response = connection.ar_invoices.get_all()
     df = pd.DataFrame(response)
 
+    logger.info(f'tblARInvoices{suffix}')
     con.to_sql(df, f'tblARInvoices{suffix}', schema='stage', if_exists='replace', index=False)
 
     con.run("EXEC eggy.stpARInvoices")
