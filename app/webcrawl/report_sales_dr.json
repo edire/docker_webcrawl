@@ -1,0 +1,73 @@
+{
+    "scroll_to_sales_dr":{
+        "command": "scroll_margin",
+        "command_value_type": null,
+        "command_value": "300",
+        "post_time_delay": 2.0,
+        "xpath": "\/html\/body\/div[1]\/div[1]\/section[1]\/div[1]\/div"
+    },
+    "click_sales_dr_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[18]\/div"
+        
+    },
+    "switch_frame_filter":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "3",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "clear_date":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput1\"]"
+    },
+    "input_35_days_back":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\r\ncommand_value = (dt.date.today() + dt.timedelta(days=-35)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput1\"]"
+    },
+    "submit_default_date_range":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@name=\"submit\"]"
+    },
+    "switch_frame_report":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "0",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "report_download":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@onclick=\"excelReport()\"]"
+    },
+    "sql_load":{
+        "command": "loadfile",
+        "command_value_type": "python",
+        "command_value": "sql_tbl='stage.tblSalesReport'\r\nload_args={\"sheet_name\":0, \"skiprows\":5}",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "run_proc":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC eggy.stpSalesReport",
+        "post_time_delay": null,
+        "xpath": null
+    }
+}

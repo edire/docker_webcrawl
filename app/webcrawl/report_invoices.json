@@ -1,0 +1,65 @@
+{
+    "invoices_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 5.0,
+        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[15]\/div"
+    },
+    "switch_frame":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "3",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "clear_date_field":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"calInput1\"]"
+    },
+    "input_35_days_back":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\r\ncommand_value = (dt.date.today() + dt.timedelta(days=-35)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput1\"]"
+    },
+    "hit_submit":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@name=\"submit\"]"
+    },
+    "switch_frame2":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "0",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "download_report":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@onclick=\"excelReport()\"]"
+    },
+    "load_sql":{
+        "command": "loadfile",
+        "command_value_type": "python",
+        "command_value": "sql_tbl='stage.tblInvoices'\nload_args={\"sheet_name\":0, \"skiprows\":5}",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "run_proc":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC eggy.stpInvoices",
+        "post_time_delay": null,
+        "xpath": null
+    }
+}

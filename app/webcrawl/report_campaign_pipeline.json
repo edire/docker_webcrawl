@@ -1,0 +1,51 @@
+{
+    "campaign_pipeline_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[4]\/div"
+    },
+    "switch_report_frame1":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "2",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "switch_report_frame2":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "0",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "download_report":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@onclick=\"excelReport()\"]"
+    },
+    "load_sql":{
+        "command": "loadfile",
+        "command_value_type": "python",
+        "command_value": "sql_tbl='stage.tblCampaigns'\r\nload_args={\"sheet_name\":0, \"skiprows\":5}",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "run_proc":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC eggy.stpCampaigns",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "run_proc2":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC eggy.stpCampaigns_Trans",
+        "post_time_delay": null,
+        "xpath": null
+    }
+}

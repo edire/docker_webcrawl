@@ -1,0 +1,261 @@
+{
+    "revenue_analytics_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 5.0,
+        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[13]\/div"
+    },
+    "switch_frame":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "3",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "drop_down_office":{
+        "command": "drop_down",
+        "command_value_type": null,
+        "command_value": "Office",
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"grpbx1\"]"
+    },
+    "drop_down_market":{
+        "command": "drop_down",
+        "command_value_type": null,
+        "command_value": "Market",
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"grpbx2\"]"
+    },
+    "drop_down_sic":{
+        "command": "drop_down",
+        "command_value_type": null,
+        "command_value": "SIC",
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"grpbx3\"]"
+    },
+    "drop_down_ae":{
+        "command": "drop_down",
+        "command_value_type": null,
+        "command_value": "CurrentAE",
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"grpbx4\"]"
+    },
+    "drop_down_advertiser":{
+        "command": "drop_down",
+        "command_value_type": null,
+        "command_value": "AdvertiserName",
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"grpbx5\"]"
+    },
+    "drop_down_month_duration":{
+        "command": "drop_down",
+        "command_value_type": null,
+        "command_value": "1 Month",
+        "post_time_delay": 2.0,
+        "xpath": "\/\/*[@id=\"interval\"]\/select"
+    },
+    "clear_date_1":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput1\"]"
+    },
+    "input_date_1":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(-3) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput1\"]"
+    },
+    "clear_date_2":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput2\"]"
+    },
+    "input_date_2":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(-2) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput2\"]"
+    },
+    "clear_date_3":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput3\"]"
+    },
+    "input_date_3":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(-1) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput3\"]"
+    },
+    "clear_date_4":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput4\"]"
+    },
+    "input_date_4":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(1) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput4\"]"
+    },
+    "clear_date_5":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput5\"]"
+    },
+    "input_date_5":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(2) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput5\"]"
+    },
+    "clear_date_6":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput6\"]"
+    },
+    "input_date_6":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(3) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput6\"]"
+    },
+    "clear_date_7":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput7\"]"
+    },
+    "input_date_7":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(4) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput7\"]"
+    },
+    "clear_date_8":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput8\"]"
+    },
+    "input_date_8":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(5) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput8\"]"
+    },
+    "clear_date_9":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput9\"]"
+    },
+    "input_date_9":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(6) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput9\"]"
+    },
+    "clear_date_10":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput10\"]"
+    },
+    "input_date_10":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(7) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput10\"]"
+    },
+    "clear_date_11":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput11\"]"
+    },
+    "input_date_11":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(8) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput11\"]"
+    },
+    "clear_date_12":{
+        "command": "clear",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": null,
+        "xpath": "\/\/*[@id=\"calInput12\"]"
+    },
+    "input_date_12":{
+        "command": "send_keys",
+        "command_value_type": "python",
+        "command_value": "import datetime as dt\nimport pandas as pd\ncommand_value = (dt.date.today() + pd.tseries.offsets.MonthEnd(0) + pd.tseries.offsets.MonthBegin(-1) + pd.tseries.offsets.MonthEnd(9) + dt.timedelta(days=1)).strftime('%Y-%m-%d')",
+        "post_time_delay": 1.0,
+        "xpath": "\/\/*[@id=\"calInput12\"]"
+    },
+    "show_report":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"selections\"]\/p\/button"
+    },
+    "download_report":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"exportButton\"]"
+    },
+    "load_sql":{
+        "command": "loadfile",
+        "command_value_type": "python",
+        "command_value": "sql_tbl='stage.tblRevenueAnalytics'\nload_args={\"sheet_name\":0, \"skiprows\":5}",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "run_proc":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC eggy.stpRevenueAnalytics",
+        "post_time_delay": null,
+        "xpath": null
+    },
+    "run_proc_2":{
+        "command": "runproc",
+        "command_value_type": null,
+        "command_value": "EXEC eggy.stpRevenueAnalytics_2",
+        "post_time_delay": null,
+        "xpath": null
+    }
+}

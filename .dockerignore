@@ -5,10 +5,9 @@ logs/
 verde_apx/
 *.bat
 .vscode/
-
-
 poetry.lock
 pyproject.toml
 pyenv/
 activate
 .python-version
+desktop.ini
