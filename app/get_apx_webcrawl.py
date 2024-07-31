@@ -22,28 +22,36 @@ def RunCrawler(file_list):
 def crawl_all():
 
     # Sales Report DR
-    t01 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_sales_dr.json'])
+    logger.info('Beginning Sales Report DR')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_sales_dr.json'])
 
     # Renewal Contracts
-    t02 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_renewal_contracts.json'])
+    logger.info('Beginning Renewal Contracts')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_renewal_contracts.json'])
 
     # RO Market
-    t03 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market.json'])
+    logger.info('Beginning Ro Market')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market.json'])
 
     # Marketplace Accruals
-    t04 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_marketplace_accruals.json'], wait_for=[t01])
+    logger.info('Beginning Marketplace Accruals')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_marketplace_accruals.json'])
 
     # Revenue Analytics
-    t05 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_revenue_analytics.json'], wait_for=[t02])
+    logger.info('Beginning Revenue Analytics')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_revenue_analytics.json'])
 
     # Invoices
-    t06 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_invoices.json'], wait_for=[t03])
+    logger.info('Beginning Invoices')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_invoices.json'])
 
     # Campaign Pipeline
-    t07 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_campaign_pipeline.json'], wait_for=[t04])
+    logger.info('Beginning Campaign Pipeline')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_campaign_pipeline.json'])
 
     # Expirations
-    t08 = RunCrawler.submit(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_expirations.json'], wait_for=[t05])
+    logger.info('Beginning Expirations')
+    RunCrawler(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_expirations.json'])
 
 
 crawl_all()
