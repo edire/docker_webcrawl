@@ -1,14 +1,12 @@
 #%%
 
 import _webcrawl_tools as wc
-from prefect import task, flow
-
-
 import dlogging
+
+
 logger = dlogging.NewLogger(__file__, use_cd=True)
 
 
-@task
 def RunCrawler(file_list):
     df_crawl = wc.CrawlPath(file_list)
     driver, temp_dir = wc.GetWebDriver()
@@ -18,43 +16,37 @@ def RunCrawler(file_list):
 
 #%%
 
-@flow
-def crawl_all():
+# Sales Report DR
+logger.info('Beginning Sales Report DR')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_sales_dr.json'])
 
-    # Sales Report DR
-    logger.info('Beginning Sales Report DR')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_sales_dr.json'])
+# Renewal Contracts
+logger.info('Beginning Renewal Contracts')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_renewal_contracts.json'])
 
-    # Renewal Contracts
-    logger.info('Beginning Renewal Contracts')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_renewal_contracts.json'])
+# RO Market
+logger.info('Beginning Ro Market')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market.json'])
 
-    # RO Market
-    logger.info('Beginning Ro Market')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market.json'])
+# Marketplace Accruals
+logger.info('Beginning Marketplace Accruals')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_marketplace_accruals.json'])
 
-    # Marketplace Accruals
-    logger.info('Beginning Marketplace Accruals')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_marketplace_accruals.json'])
+# Revenue Analytics
+logger.info('Beginning Revenue Analytics')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_revenue_analytics.json'])
 
-    # Revenue Analytics
-    logger.info('Beginning Revenue Analytics')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_revenue_analytics.json'])
+# Invoices
+logger.info('Beginning Invoices')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_invoices.json'])
 
-    # Invoices
-    logger.info('Beginning Invoices')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_invoices.json'])
+# Campaign Pipeline
+logger.info('Beginning Campaign Pipeline')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_campaign_pipeline.json'])
 
-    # Campaign Pipeline
-    logger.info('Beginning Campaign Pipeline')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_campaign_pipeline.json'])
-
-    # Expirations
-    logger.info('Beginning Expirations')
-    RunCrawler(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_expirations.json'])
-
-
-crawl_all()
+# Expirations
+logger.info('Beginning Expirations')
+RunCrawler(['./webcrawl/_login.json', './webcrawl/_accounts_tab.json', './webcrawl/report_expirations.json'])
 
 # Run Additional Procs
 df_crawl = wc.CrawlPath(['./webcrawl/report_run_procs.json'])
