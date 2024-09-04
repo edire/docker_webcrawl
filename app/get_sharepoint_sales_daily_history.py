@@ -94,7 +94,7 @@ try:
     #%%
 
     logger.info('Hudson Valley Daily History')
-    df = pd.read_excel(bytes_file_obj, sheet_name='Hudson Sales Dollars', engine='openpyxl', skiprows=5, nrows=26)
+    df = pd.read_excel(bytes_file_obj, sheet_name='Verde NE Sales Dollars', engine='openpyxl', skiprows=5, nrows=26)
 
     for col in df.columns:
         if not isinstance(col, str):
