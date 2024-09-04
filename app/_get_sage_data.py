@@ -85,6 +85,7 @@ def CustomerData(sage_con, suffix):
     response = sage_con.customers.get_by_query(fields=fields)
     df = pd.DataFrame(response)
 
+    logger.info(f'tblCustomers{suffix}')
     con.to_sql(df, f'tblCustomers{suffix}', schema='stage', if_exists='replace', index=False)
 
     con.run("EXEC eggy.stpCustomers")
@@ -112,6 +113,7 @@ def PaymentDetails(sage_con):
     # response = connection.ar_payment_detail.get_by_query(fields=fields)
     df = pd.DataFrame(response)
 
+    logger.info(f'tblARPaymentDetails')
     con.to_sql(df, 'tblARPaymentDetails', schema='stage', if_exists='replace', index=False)
 
     con.run("EXEC eggy.stpARPaymentDetails")
