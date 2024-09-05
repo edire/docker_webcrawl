@@ -4,7 +4,8 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y curl gnupg git
 
 #Chromium
-RUN apt-get update && apt-get install -y --fix-missing chromium-driver
+# RUN apt-get update && apt-get install -y --fix-missing chromium-driver
+RUN apt-get update && apt-get install -y chromium-driver
 
 #ODBC
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
