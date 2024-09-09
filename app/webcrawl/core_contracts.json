@@ -1,0 +1,58 @@
+{
+    "switch_frame":{
+        "command": "switch_frame",
+        "command_value_type": null,
+        "command_value": "1",
+        "post_time_delay": 2.0,
+        "xpath": null
+    },
+    "agreements_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 3.0,
+        "xpath": "\/\/*[@id=\"tApx\"]\/div\/div[1]\/div\/div[3]\/div[3]\/div"
+    },
+    "contracts_tab":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 3.0,
+        "xpath": "\/\/*[@id=\"tApxAgreements\"]\/div\/div[1]\/div\/div[2]\/div[3]\/div"
+    },
+    "click_search":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"sApxAgreementsContractsHdr\"]\/table\/tbody\/tr\/td[19]\/table\/tbody\/tr\/td[2]"
+    },
+    "excel_download":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 10.0,
+        "xpath": "\/\/*[@id=\"sApxAgreementsContractsHdr\"]\/table\/tbody\/tr\/td[26]\/table\/tbody\/tr\/td[2]"
+    },
+    "switch_window":{
+        "command": "switch_window",
+        "command_value_type": null,
+        "command_value": "1",
+        "post_time_delay": 3.0,
+        "xpath": null
+    },
+    "click_submit":{
+        "command": "click",
+        "command_value_type": null,
+        "command_value": null,
+        "post_time_delay": 15.0,
+        "xpath": "\/html\/body\/form\/input[31]"
+    },
+    "load_sql":{
+        "command": "loadfile",
+        "command_value_type": "python",
+        "command_value": "sql_tbl='stage.tblCoreContracts'\r\nload_args={\"sheet_name\":0}",
+        "post_time_delay": null,
+        "xpath": null
+    }
+}
