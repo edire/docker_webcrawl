@@ -23,7 +23,7 @@
     "load_sql":{
         "command": "loadfile",
         "command_value_type": "python",
-        "command_value": "clean=0\r\nsql_tbl='stage.tblROMarketH'\r\nload_args={\"sheet_name\":0, \"skiprows\":5, \"if_exists\":\"append\"}",
+        "command_value": "clean=0\r\nsql_tbl='stage.tblROMarketH'\r\nload_args={\"sheet_name\":0, \"skiprows\":5}\r\nif_exists='append'",
         "post_time_delay": null,
         "xpath": null
     }
