@@ -99,10 +99,17 @@ def clean_and_load(sql_name):
 
 #%%
 
-clean_and_load('ROMarketH')
-# clean_and_load('ROMarketS')
+def main():
+    clean_and_load('ROMarketH')
+    # clean_and_load('ROMarketS')
 
-logger.info(f'Complete - {__name__}')
+    logger.info(f'Complete - {__name__}')
+
+
+#%%
+
+if __name__ == '__main__':
+    main()
 
 
 #%%
