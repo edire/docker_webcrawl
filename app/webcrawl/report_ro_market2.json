@@ -4,7 +4,7 @@
         "command_value_type": null,
         "command_value": null,
         "post_time_delay": 30.0,
-        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[6]\/div"
+        "xpath": "\/\/*[@id=\"app\"]\/div[1]\/section[1]\/div[7]\/div"
     },
     "switch_frame":{
         "command": "switch_frame",

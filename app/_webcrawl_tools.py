@@ -57,7 +57,8 @@ def _SQLLoad(temp_dir, **kwargs):
             else:
                 sql_tbl = kwargs['sql_tbl']
                 sql_schema_landing = None
-            engine.to_sql(df, sql_tbl, schema=sql_schema_landing, if_exists='replace', index=False, extras=True)
+            if_exists=kwargs.get('if_exists', 'replace')
+            engine.to_sql(df, sql_tbl, schema=sql_schema_landing, if_exists=if_exists, index=False, extras=True)
         shutil.rmtree(temp_dir)
     if i == 0:
         raise Exception(f"No downloaded files found, kwargs: {kwargs}")
