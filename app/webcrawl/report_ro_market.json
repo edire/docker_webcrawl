@@ -51,7 +51,7 @@
     "switch_frame2":{
         "command": "switch_frame",
         "command_value_type": null,
-        "command_value": "3",
+        "command_value": "4",
         "post_time_delay": 2.0,
         "xpath": null
     },
@@ -93,7 +93,7 @@
     "switch_frame3":{
         "command": "switch_frame",
         "command_value_type": null,
-        "command_value": "3",
+        "command_value": "5",
         "post_time_delay": 2.0,
         "xpath": null
     },
