@@ -28,11 +28,6 @@ RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcraw
 # RO Market
 logger.info('Beginning Ro Market')
 RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market.json'])
-rc.main()
-RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market2.json'])
-rc.main()
-RunCrawler(['./webcrawl/_login.json', './webcrawl/_reports_tab.json', './webcrawl/report_ro_market3.json'])
-rc.main()
 
 # Marketplace Accruals
 logger.info('Beginning Marketplace Accruals')

@@ -76,7 +76,7 @@ def con_float(x):
 
 
 def clean_and_load(sql_name):
-    df = con.read(f'select * from stage.tbl{sql_name}')
+    df = con.read(f'select * from dbo.tbl{sql_name}')
     df['location'] = df[' '].apply(get_location)
     df['location'] = df['location'].ffill()
     df = df[~pd.isna(df[' '])]
