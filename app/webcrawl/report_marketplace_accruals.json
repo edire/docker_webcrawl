@@ -24,14 +24,14 @@
         "command": "click",
         "command_value_type": null,
         "command_value": null,
-        "post_time_delay": 60.0,
+        "post_time_delay": 120.0,
         "xpath": "\/\/*[@id=\"actionLoad\"]"
     },
     "download_report":{
         "command": "click",
         "command_value_type": null,
         "command_value": null,
-        "post_time_delay": 60.0,
+        "post_time_delay": 120.0,
         "xpath": "\/\/*[@id=\"actionExport\"]"
     },
     "load_sql":{
