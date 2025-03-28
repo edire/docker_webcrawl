@@ -65,7 +65,7 @@ try:
         t_put_commission = upload_sharepoint_commission.submit(wait_for=[t_apx, t_sage, t_get_commission])
         t_put_commission_summaries = upload_commission_summaries.submit(wait_for=[t_apx, t_sage, t_get_commission])
         t_romarket_cleanup = romarket_cleanup.submit(wait_for=[t_apx])
-        t_apx_api = apx_api.submit()
+        # t_apx_api = apx_api.submit()
         send_email.submit(wait_for=[
             t_apx,
             t_sage,
@@ -73,8 +73,8 @@ try:
             t_get_commission,
             t_put_commission,
             t_put_commission_summaries,
-            t_romarket_cleanup,
-            t_apx_api
+            t_romarket_cleanup
+            # t_apx_api
             ])
 
     pipeline()
